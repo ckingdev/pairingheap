@@ -7,9 +7,9 @@ type MinPairingHeap struct {
 }
 
 type node struct {
-	val                    interface{}
-	key                    float32
-	parent, child, sibling *node
+	val            interface{}
+	key            float32
+	child, sibling *node
 }
 
 func New() *MinPairingHeap {
@@ -36,13 +36,11 @@ func mergeNodes(m1, m2 *node) *node {
 		tmp := m1.child
 		m1.child = m2
 		m2.sibling = tmp
-		m2.parent = m1
 		return m1
 	}
 	tmp := m2.child
 	m2.child = m1
 	m1.sibling = tmp
-	m1.parent = m2
 	return m2
 }
 
