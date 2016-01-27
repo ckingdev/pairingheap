@@ -11,7 +11,24 @@ func TestMinPHeap(t *testing.T) {
 	Convey("Test that output after random input is sorted.", t, func() {
 		m := New()
 		for i := 0; i < 1000; i++ {
-			m.Insert(0, rand.Float32())
+			m.Insert(i, rand.Float32())
+		}
+		_, prev := m.Pop()
+		for i := 0; i < 999; i++ {
+			_, key := m.Pop()
+			So(key, ShouldBeGreaterThanOrEqualTo, prev)
+			prev = key
+		}
+	})
+
+	Convey("Test DecreaseKey.", t, func() {
+		m := New()
+		for i := 0; i < 1000; i++ {
+			m.Insert(i, rand.Float32())
+		}
+		for i := 0; i < 1000; i++ {
+			val, _ := m.PeekAtVal(i)
+			m.DecreaseKey(i, val-1)
 		}
 		_, prev := m.Pop()
 		for i := 0; i < 999; i++ {
