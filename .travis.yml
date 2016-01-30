@@ -1,0 +1,13 @@
+language: go
+
+go:
+  - 1.4
+  - 1.5
+
+install:
+  - go get github.com/smartystreets/goconvey
+  - go get github.com/mattn/goveralls
+  - if ! go get github.com/golang/tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
+  - chmod +x testall.sh
+
+script: ./testall.sh
