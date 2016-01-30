@@ -37,16 +37,16 @@ func mergeNodes(m1, m2 *node) *node {
 		return m1
 	}
 	if m1.key < m2.key {
-		tmp := m1.child
+		m1child := m1.child
 		m1.child = m2
 		m2.parent = m1
-		m2.sibling = tmp
+		m2.sibling = m1child
 		return m1
 	}
-	tmp := m2.child
+	m2child := m2.child
 	m2.child = m1
 	m1.parent = m2
-	m1.sibling = tmp
+	m1.sibling = m2child
 	return m2
 }
 
@@ -66,6 +66,9 @@ func (m *MinPairingHeap) Pop() (interface{}, float32) {
 		return nil, 0
 	}
 	m.head = mergePairs(m.head.child)
+	if m.head != nil {
+		m.head.parent = nil
+	}
 	delete(m.contains, val)
 	m.size--
 	return val, key
@@ -89,7 +92,7 @@ func (m *MinPairingHeap) DecreaseKey(val interface{}, newKey float32) error {
 	}
 	detach(node)
 	node.key = newKey
-	mergeNodes(m.head, node)
+	m.head = mergeNodes(m.head, node)
 	return nil
 }
 
@@ -118,7 +121,9 @@ func detach(n *node) {
 		iter = iter.sibling
 	}
 	if iter == nil {
+		fmt.Println(n.val)
 		panic("left sibling of node exists but could not be found")
 	}
 	iter.sibling = n.sibling
+	n.parent = nil
 }
