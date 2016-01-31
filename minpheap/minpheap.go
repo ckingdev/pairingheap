@@ -109,9 +109,6 @@ func detach(n *node) {
 		return
 	}
 	iter := n.parent.child
-	if iter == nil {
-		panic("iter is nil?!")
-	}
 	if iter == n {
 		n.parent.child = n.sibling
 		n.parent = nil
@@ -119,10 +116,6 @@ func detach(n *node) {
 	}
 	for iter != nil && iter.sibling != n {
 		iter = iter.sibling
-	}
-	if iter == nil {
-		fmt.Println(n.val)
-		panic("left sibling of node exists but could not be found")
 	}
 	iter.sibling = n.sibling
 	n.parent = nil
